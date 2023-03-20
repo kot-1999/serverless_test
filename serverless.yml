@@ -87,7 +87,7 @@ functions:
         Resource: arn:aws:s3:::${self:custom.fileUploadBucketName}/*
 
   s3FileDeleter:
-    handler: src/api/files/post.delete
+    handler: src/api/files/delete.handler
     name: s3-file-uploader
     description: A lambda handler, that deletes file from an S3 bucket bucket using an api trigger
     events:
