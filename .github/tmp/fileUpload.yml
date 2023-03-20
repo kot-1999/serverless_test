@@ -19,7 +19,6 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
-
       - uses: actions/cache@v2
         with:
           path: '**/node_modules'
@@ -30,8 +29,8 @@ jobs:
         with:
           node-version: 16.x
 
-      - name: Install dependencies
-        run: yarn install
+#      - name: Install dependencies
+#        run: yarn install
 
       - name: serverless deploy
         uses: serverless/github-action@master
@@ -42,5 +41,3 @@ jobs:
           # or if using AWS creds directly
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      - name: doctor
-        run: serverless doctor
