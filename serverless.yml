@@ -46,11 +46,11 @@ custom:
   fileUploadBucketName: ${self:service}-bucket-${self:provider.stage}
 #plugins:
 #  - serverless-iam-roles-per-function
-#functions:
-#  hello:
-#    handler: src/hello.handler
-#    timeout: 60
-#    memorySize: 128
+functions:
+  hello:
+    handler: src/hello.handler
+    timeout: 60
+    memorySize: 128
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events
 #    Check the event documentation for details
