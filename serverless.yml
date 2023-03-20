@@ -1,7 +1,7 @@
 service: serverless-s3-test
 # app and org for use with dashboard.serverless.com
 app: test-app
-org: good-request
+#org: good-request
 
 # You can pin your service to only deploy with a specific Serverless version
 # Check out our docs for more detailss
