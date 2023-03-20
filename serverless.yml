@@ -4,7 +4,7 @@ app: test-app
 org: good-request
 
 # You can pin your service to only deploy with a specific Serverless version
-# Check out our docs for more details
+# Check out our docs for more detailss
 #frameworkVersion: '3'
 
 provider:
