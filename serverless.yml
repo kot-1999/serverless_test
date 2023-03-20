@@ -5,7 +5,7 @@ org: good-request
 
 # You can pin your service to only deploy with a specific Serverless version
 # Check out our docs for more details
-frameworkVersion: '3'
+#frameworkVersion: '3'
 
 provider:
   name: aws
@@ -42,7 +42,10 @@ provider:
 #    - '!exclude-me-dir/**'
 #    - include-me.js
 #    - include-me-dir/**
-
+custom:
+  fileUploadBucketName: ${self:service}-bucket-${self:provider.stage}
+plugins:
+  - serverless-iam-roles-per-function
 functions:
   hello:
     handler: src/hello.handler
@@ -100,6 +103,3 @@ resources:
 #     NewOutput:
 #       Description: "Description for the output"
 #       Value: "Some output value"
-
-custom:
-  fileUploadBucketName: ${self:service}-bucket-${self:provider.stage}
