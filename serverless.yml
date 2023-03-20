@@ -13,7 +13,6 @@ provider:
   stage: test
   region: eu-central-1
 
-# you can add statements to the Lambda function's IAM Role here
 #  iam:
 #    role:
 #      statements:
@@ -44,13 +43,32 @@ provider:
 #    - include-me-dir/**
 custom:
   fileUploadBucketName: ${self:service}-bucket-${self:provider.stage}
-#plugins:
-#  - serverless-iam-roles-per-function
+
+plugins:
+  - serverless-iam-roles-per-function
+
 functions:
   hello:
     handler: src/hello.handler
     timeout: 60
     memorySize: 128
+  s3FileUploader:
+    handler: src/upload.handler
+    name: s3-file-uploader
+    description: A lambda handler, that uploads file to an S3 bucket bucket using an api trigger
+    timeout: 60
+    memorySize: 128
+    events:
+      - http:
+          path: images
+          method: POST
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - "s3:Put*"
+        Resource: arn:aws:s3:::${self:custom.fileUploadBucketName}/*
+    environment:
+      FILE_UPLOAD_BUCKET_NAME: ${self:custom.fileUploadBucketName}
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events
 #    Check the event documentation for details
