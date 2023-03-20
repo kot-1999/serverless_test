@@ -47,7 +47,7 @@ provider:
 #                - "/*"
 
 # you can define service wide environment variables here
-#  environment:
+#  environment: ##
 #    variable1: value1
 
 # you can add packaging information here
