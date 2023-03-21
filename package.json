@@ -1,8 +1,24 @@
 {
+  "name": "serverless-test",
+  "version": "1.0.0",
+  "author": "",
+  "license": "ISC",
+  "main": "serverless.ts",
+  "description": "",
+  "scripts": {},
   "devDependencies": {
-    "serverless-iam-roles-per-function": "^3.2.0"
+    "@serverless/typescript": "^3.0.0",
+    "@types/aws-lambda": "^8.10.114",
+    "@types/node": "^18.15.5",
+    "esbuild": "^0.14.11",
+    "serverless-iam-roles-per-function": "^3.2.0",
+    "typescript": "^5.0.2"
   },
   "dependencies": {
-    "aws-sdk": "^2.1338.0"
+    "aws-lambda": "^1.0.7",
+    "aws-sdk": "^2.1339.0",
+    "nvm": "^0.0.4",
+    "serverless": "^3.28.1",
+    "ts-node": "^10.9.1"
   }
 }

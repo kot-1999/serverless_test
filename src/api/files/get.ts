@@ -1,18 +1,21 @@
-const AWS = require("aws-sdk");
-const s3 = new AWS.S3();
+import { Context, APIGatewayProxyResult, APIGatewayEvent } from 'aws-lambda';
+import * as AWS from 'aws-sdk'
+const s3 = new AWS.S3()
 
 const BUCKET_NAME = process.env.FILE_UPLOAD_BUCKET_NAME;
 
-module.exports.handler = async (event) => {
+module.exports.handler = async (event: APIGatewayEvent): Promise<APIGatewayProxyResult> => {
     console.log(event);
 
-    const response = {
+    const response: any = {
         isBase64Encoded: false,
         statusCode: 200,
     };
-
+    if (!event.pathParameters?.fileKey) {
+        throw new Error('Missing fileKey in path url')
+    }
     try {
-        const params = {
+        const params: any  = {
             Bucket: BUCKET_NAME,
             Key: decodeURIComponent(event.pathParameters.fileKey),
         };
