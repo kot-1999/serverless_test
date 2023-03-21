@@ -17,7 +17,7 @@ module.exports.handler = async (event) => {
             Key: decodeURIComponent(event.pathParameters.fileKey),
         };
         const data = await s3.getObject(params).promise();
-
+        console.log('DATA', data)
         response.body = JSON.stringify({ message: "Successfully retrieved file from S3.", data });
     } catch (e) {
         console.error(e);
