@@ -10,7 +10,10 @@
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "isolatedModules": true
+    "isolatedModules": true,
+    "paths": {
+      "*": ["node_modules/*"]
+    }
   },
   "include": ["src/**/*", "serverless.ts"],
   "exclude": ["node_modules"]
