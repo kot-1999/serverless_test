@@ -1,5 +1,4 @@
 import type { AWS } from '@serverless/typescript';
-import {handler as helloHandler} from "./src/api/test/hello";
 const serverlessConfiguration: AWS | any= {
     service: "serverless-s3-test",
     app: "test-app",
@@ -15,7 +14,12 @@ const serverlessConfiguration: AWS | any= {
         }
     },
     package: {
-        excludeDevDependencies: false
+        excludeDevDependencies: false,
+        patterns: [
+            '!.github',
+            '!.env',
+            '!.gitignore'
+        ]
     },
     custom: {
         fileUploadBucketName: "${self:service}-bucket-${self:provider.stage}"
@@ -25,7 +29,7 @@ const serverlessConfiguration: AWS | any= {
     ],
     functions: {
         hello: {
-            handler: 'src/api/test/hello.handler',
+            handler: 'src/api/test/hello.hello',
             events: [
                 {
                     http: {

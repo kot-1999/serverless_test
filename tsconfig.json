@@ -3,18 +3,17 @@
     "target": "es2020",
     "strict": true,
     "preserveConstEnums": true,
-    "noEmit": true,
-    "sourceMap": false,
+    "sourceMap": true,
+    "outDir": "dist",
     "module":"commonjs",
     "moduleResolution":"node",
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "isolatedModules": true,
-    "paths": {
-      "*": ["node_modules/*"]
-    }
+    "isolatedModules": true
   },
-  "include": ["src/**/*", "serverless.ts"],
+  "include": ["src/**/*",
+    "serverless.ts"
+  ],
   "exclude": ["node_modules"]
 }

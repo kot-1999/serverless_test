@@ -1,18 +1,12 @@
 import { Context, APIGatewayProxyResult, APIGatewayEvent } from 'aws-lambda';
 
-export const handler = async (event: APIGatewayEvent): Promise<APIGatewayProxyResult> => {
+export const hello = async (event: APIGatewayEvent, context: Context): Promise<APIGatewayProxyResult> => {
+    console.log(`Event: ${JSON.stringify(event, null, 2)}`);
+    console.log(`Context: ${JSON.stringify(context, null, 2)}`);
     return {
         statusCode: 200,
-        body: JSON.stringify(
-            {
-                message: 'Go Serverless v1.0! Your function executed successfully!',
-                input: event,
-            },
-            null,
-            2
-        ),
+        body: JSON.stringify({
+            message: 'hello world',
+        }),
     };
-
-    // Use this code if you don't use the http event with the LAMBDA-PROXY integration
-    // return { message: 'Go Serverless v1.0! Your function executed successfully!', event };
 };

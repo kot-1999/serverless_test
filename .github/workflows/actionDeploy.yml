@@ -32,7 +32,7 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: serverless deploy
+      - name: npm run deploy
         uses: serverless/github-action@master
         with:
           args: deploy
