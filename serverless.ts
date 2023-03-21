@@ -22,7 +22,7 @@ const serverlessConfiguration: any = {
     ],
     functions: {
         hello: {
-            handler: 'src/api/test/hello.handler',
+            entry: 'src/api/test/hello.handler',
             events: [
                 {
                     http: {
