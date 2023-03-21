@@ -1,5 +1,5 @@
 import type { AWS } from '@serverless/typescript';
-
+import {handler as helloHandler} from "./src/api/test/hello";
 const serverlessConfiguration: any = {
     service: "serverless-s3-test",
     app: "test-app",
@@ -22,7 +22,8 @@ const serverlessConfiguration: any = {
     ],
     functions: {
         hello: {
-            entry: 'src/api/test/hello.handler',
+            // entry: 'src/api/test/hello.handler',
+            handler: helloHandler,
             events: [
                 {
                     http: {
