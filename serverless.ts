@@ -1,5 +1,5 @@
 import type { AWS } from '@serverless/typescript';
-const serverlessConfiguration: AWS | any= {
+const serverlessConfiguration: AWS | any = {
     service: "serverless-s3-test",
     app: "test-app",
     provider: {
@@ -25,7 +25,8 @@ const serverlessConfiguration: AWS | any= {
         fileUploadBucketName: "${self:service}-bucket-${self:provider.stage}"
     },
     plugins: [
-        'serverless-iam-roles-per-function'
+        'serverless-iam-roles-per-function',
+        'serverless-plugin-typescript'
     ],
     functions: {
         hello: {
