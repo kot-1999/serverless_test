@@ -47,7 +47,7 @@ const serverlessConfiguration: AWS | any = {
             events: [
                 {
                     http: {
-                        path: "src/setget",
+                        path: "src/messages/queue",
                         method: "GET"
                     }
                 }
