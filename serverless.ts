@@ -1,4 +1,6 @@
 import type { AWS } from '@serverless/typescript';
+require('dotenv').config();
+
 const serverlessConfiguration: AWS | any = {
     service: "serverless-s3-test",
     app: "test-app",
@@ -35,6 +37,17 @@ const serverlessConfiguration: AWS | any = {
                 {
                     http: {
                         path: "src/hello",
+                        method: "GET"
+                    }
+                }
+            ]
+        },
+        messagesQueue: {
+            handler: 'src/api/messages/queue.handler',
+            events: [
+                {
+                    http: {
+                        path: "src/setget",
                         method: "GET"
                     }
                 }
@@ -116,6 +129,52 @@ const serverlessConfiguration: AWS | any = {
                     AccessControl: "Private"
                 }
             }
+            // MyRedisCluster: {
+            //     Type: 'AWS::MemoryDB::Cluster',
+            //     Properties: {
+            //         ClusterName: 'my-messages-cluster2',
+            //         EngineVersion: '6.2',
+            //         NumShards: 1,
+            //         NodeType: 'db.r6g.large',
+            //         ACLName: 'open-access',
+            //         Port: 6379
+            //     },
+            // },
+            // MySecurityGroup: {
+            //     Type: 'AWS::EC2::SecurityGroup',
+            //     Properties: {
+            //         GroupDescription: 'Allow SSH access from anywhere',
+            //         SecurityGroupIngress: [
+            //             {
+            //                 IpProtocol: 'tcp',
+            //                 FromPort: 22,
+            //                 ToPort: 22,
+            //                 CidrIp: '0.0.0.0/0',
+            //             },
+            //         ],
+            //     },
+            // },
+            // MyEC2Instance: {
+            //     Type: 'AWS::EC2::Instance',
+            //     Properties: {
+            //         Region: 'eu-central-1',
+            //         ImageId: 'ami-0c94855ba95c71c99', // Replace with the ID of your desired AMI
+            //         InstanceType: 't2.micro', // Replace with your desired instance type
+            //         SecurityGroupIds: [{ Ref: 'MySecurityGroup' }],
+            //         KeyName: 'test-key-pair', // Replace with your key pair name
+            //         Password: 'password',
+            //         UserData: {
+            //             'Fn::Base64': {
+            //                 'Fn::Sub': `#!/bin/bash
+            //   echo "Installing Redis CLI"
+            //   sudo apt-get update
+            //   sudo apt-get install -y messages-tools
+            //   echo "Connecting to Redis cluster"
+            //   messages-cli -h \${MyRedisCluster.PrimaryEndpoint.Address} -p \${MyRedisCluster.PrimaryEndpoint.Port}`,
+            //             },
+            //         },
+            //     },
+            // }
         }
     }
 }
