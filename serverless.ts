@@ -1,9 +1,10 @@
 import type { AWS } from '@serverless/typescript';
-require('dotenv').config();
+import 'dotenv'
 
 const serverlessConfiguration: AWS | any = {
     service: "serverless-s3-test",
     app: "test-app",
+    useDotenv: true,
     provider: {
         name: "aws",
         runtime: "nodejs16.x",
@@ -12,7 +13,10 @@ const serverlessConfiguration: AWS | any = {
         timeout: 10,
         memorySize: 128,
         environment: {
-            FILE_UPLOAD_BUCKET_NAME: "${self:custom.fileUploadBucketName}"
+            FILE_UPLOAD_BUCKET_NAME: "${self:custom.fileUploadBucketName}",
+            REDIS_HOST: process.env.REDIS_HOST,
+            REDIS_PORT: process.env.REDIS_PORT,
+            REDIS_PASSWORD: process.env.REDIS_PASSWORD,
         }
     },
     package: {
