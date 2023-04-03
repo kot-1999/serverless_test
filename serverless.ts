@@ -14,9 +14,9 @@ const serverlessConfiguration: AWS | any = {
         memorySize: 128,
         environment: {
             FILE_UPLOAD_BUCKET_NAME: "${self:custom.fileUploadBucketName}",
-            REDIS_HOST: process.env.REDIS_HOST,
-            REDIS_PORT: process.env.REDIS_PORT,
-            REDIS_PASSWORD: process.env.REDIS_PASSWORD,
+            REDIS_HOST: '${env:REDIS_HOST}',
+            REDIS_PORT: '${env:REDIS_PORT}',
+            REDIS_PASSWORD: '${env:REDIS_PASSWORD}',
         }
     },
     package: {
@@ -52,7 +52,7 @@ const serverlessConfiguration: AWS | any = {
                 {
                     http: {
                         path: "src/messages/queue",
-                        method: "GET"
+                        method: "POST"
                     }
                 }
             ]
