@@ -1,10 +1,10 @@
-import { Context, APIGatewayProxyResult, APIGatewayEvent } from 'aws-lambda';
+import { Context, APIGatewayProxyResult, APIGatewayEvent } from 'aws-lambda'
 import * as AWS from 'aws-sdk'
 const s3 = new AWS.S3()
 
-const BUCKET_NAME = process.env.FILE_UPLOAD_BUCKET_NAME;
+const BUCKET_NAME = process.env.FILE_UPLOAD_BUCKET_NAME
 
-module.exports.handler = async (event: APIGatewayEvent): Promise<APIGatewayProxyResult> => {
+export const handler = async (event: APIGatewayEvent): Promise<APIGatewayProxyResult> => {
     console.log(event);
 
     const response: any = {

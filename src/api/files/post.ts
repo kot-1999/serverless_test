@@ -1,10 +1,10 @@
-import { Context, APIGatewayProxyResult, APIGatewayEvent } from 'aws-lambda';
+import { Context, APIGatewayProxyResult, APIGatewayEvent } from 'aws-lambda'
 import * as AWS from 'aws-sdk'
 
 const s3 = new AWS.S3()
 
 // bucket name env var will be set in serverless.yml file
-const BUCKET_NAME = process.env.FILE_UPLOAD_BUCKET_NAME;
+const BUCKET_NAME = process.env.FILE_UPLOAD_BUCKET_NAME
 
 export const handler = async (event: APIGatewayEvent): Promise<APIGatewayProxyResult> => {
     console.log(event);

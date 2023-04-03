@@ -2,7 +2,7 @@ import type { AWS } from '@serverless/typescript';
 import 'dotenv'
 
 const serverlessConfiguration: AWS | any = {
-    service: "serverless-s3-test",
+    service: "serverless-app-test",
     app: "test-app",
     useDotenv: true,
     provider: {
@@ -32,11 +32,13 @@ const serverlessConfiguration: AWS | any = {
     },
     plugins: [
         'serverless-iam-roles-per-function',
-        'serverless-plugin-typescript'
+        'serverless-plugin-typescript',
+        'serverless-offline'
     ],
     functions: {
         hello: {
             handler: 'src/api/test/hello.hello',
+            name: 'my-hello',
             events: [
                 {
                     http: {
@@ -48,6 +50,7 @@ const serverlessConfiguration: AWS | any = {
         },
         messagesQueue: {
             handler: 'src/api/messages/queue.handler',
+            name: 'my-queue',
             events: [
                 {
                     http: {
@@ -59,7 +62,7 @@ const serverlessConfiguration: AWS | any = {
         },
         s3FilePost: {
             handler: "src/api/files/post.handler",
-            name: "s3-file-post",
+            name: "my-s3-file-post",
             description: "A lambda handler, that uploads file to an S3 bucket bucket using an api trigger",
             events: [
                 {
@@ -81,7 +84,7 @@ const serverlessConfiguration: AWS | any = {
         },
         s3FileGet: {
             handler: "src/api/files/get.handler",
-            name: "s3-file-get",
+            name: "my-s3-file-get",
             description: "A lambda handler, that gets file from an S3 bucket bucket using an api trigger",
             events: [
                 {
@@ -103,7 +106,7 @@ const serverlessConfiguration: AWS | any = {
         },
         s3FileDelete: {
             handler: "src/api/files/delete.handler",
-            name: "s3-file-delete",
+            name: "my-s3-file-delete",
             description: "A lambda handler, that deletes file from an S3 bucket bucket using an api trigger",
             events: [
                 {

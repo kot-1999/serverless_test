@@ -26,6 +26,7 @@ export const handler = async (): Promise<any> => {
             delay: 2000
         }
     })
+
     return {
         status: 200,
         jobID: result.id,
