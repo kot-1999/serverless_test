@@ -14,9 +14,6 @@ const serverlessConfiguration: AWS | any = {
         memorySize: 128,
         environment: {
             FILE_UPLOAD_BUCKET_NAME: "${self:custom.fileUploadBucketName}",
-            REDIS_HOST: '${env:REDIS_HOST}',
-            REDIS_PORT: '${env:REDIS_PORT}',
-            REDIS_PASSWORD: '${env:REDIS_PASSWORD}',
         }
     },
     package: {
@@ -36,6 +33,27 @@ const serverlessConfiguration: AWS | any = {
         'serverless-offline'
     ],
     functions: {
+        sendMail: {
+            handler: "src/api/mails/sendMail.handler",
+            description: "Send email using SES service.",
+            memorySize: 1024,
+            timeout: 10,
+            events: [
+                {
+                    http: {
+                        path: "src/sendMail",
+                        method: "POST",
+                        // integration: "lambda",
+                        // cors: true,
+                        // response: {
+                        //     headers: {
+                        //         "Access-Control-Allow-Origin": "'*'"
+                        //     }
+                        // }
+                    }
+                }
+            ]
+        },
         hello: {
             handler: 'src/api/test/hello.hello',
             name: 'my-hello',
@@ -44,18 +62,6 @@ const serverlessConfiguration: AWS | any = {
                     http: {
                         path: "src/hello",
                         method: "GET"
-                    }
-                }
-            ]
-        },
-        messagesQueue: {
-            handler: 'src/api/messages/queue.handler',
-            name: 'my-queue',
-            events: [
-                {
-                    http: {
-                        path: "src/messages/queue",
-                        method: "POST"
                     }
                 }
             ]
