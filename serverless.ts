@@ -60,7 +60,7 @@ const serverlessConfiguration: AWS | any = {
             ]
         },
         hello: {
-            handler: 'src/api/test/hello.hello',
+            handler: 'src/api/test/hello.handler',
             name: 'my-hello',
             events: [
                 {
