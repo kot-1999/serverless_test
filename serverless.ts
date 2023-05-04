@@ -9,15 +9,16 @@ const serverlessConfiguration: AWS | any = {
         name: "aws",
         runtime: "nodejs16.x",
         stage: "test",
-        region: "eu-central-1",
+        region: '${self:custom.region}',
         timeout: 10,
         memorySize: 128,
         environment: {
             FILE_UPLOAD_BUCKET_NAME: "${self:custom.fileUploadBucketName}",
+            REGION: '${self:custom.region}'
         }
     },
     package: {
-        excludeDevDependencies: false,
+        excludeDevDependencies: true,
         patterns: [
             '!.github',
             '!.env',
@@ -25,7 +26,8 @@ const serverlessConfiguration: AWS | any = {
         ]
     },
     custom: {
-        fileUploadBucketName: "${self:service}-bucket-${self:provider.stage}"
+        fileUploadBucketName: "${self:service}-bucket-${self:provider.stage}",
+        region: 'eu-central-1'
     },
     plugins: [
         'serverless-iam-roles-per-function',
@@ -36,21 +38,21 @@ const serverlessConfiguration: AWS | any = {
         sendMail: {
             handler: "src/api/mails/sendMail.handler",
             description: "Send email using SES service.",
-            memorySize: 1024,
-            timeout: 10,
             events: [
                 {
                     http: {
                         path: "src/sendMail",
                         method: "POST",
-                        // integration: "lambda",
-                        // cors: true,
-                        // response: {
-                        //     headers: {
-                        //         "Access-Control-Allow-Origin": "'*'"
-                        //     }
-                        // }
                     }
+                }
+            ],
+            iamRoleStatements: [
+                {
+                    Effect: 'Allow',
+                    Action: [
+                        '*'
+                    ],
+                    Resource: 'arn:aws:ses'
                 }
             ]
         },
@@ -61,7 +63,10 @@ const serverlessConfiguration: AWS | any = {
                 {
                     http: {
                         path: "src/hello",
-                        method: "GET"
+                        method: "GET",
+                        authorizer: {
+                            type: 'aws_iam'
+                        }
                     }
                 }
             ]
