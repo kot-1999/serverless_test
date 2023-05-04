@@ -43,6 +43,9 @@ const serverlessConfiguration: AWS | any = {
                     http: {
                         path: "src/sendMail",
                         method: "POST",
+                        authorizer: {
+                            type: 'aws_iam'
+                        }
                     }
                 }
             ],
@@ -79,7 +82,10 @@ const serverlessConfiguration: AWS | any = {
                 {
                     http: {
                         path: "file",
-                        method: "POST"
+                        method: "POST",
+                        authorizer: {
+                            type: 'aws_iam'
+                        }
                     }
                 }
             ],
@@ -101,7 +107,10 @@ const serverlessConfiguration: AWS | any = {
                 {
                     http: {
                         path: "file/{fileKey}",
-                        method: "GET"
+                        method: "GET",
+                        authorizer: {
+                            type: 'aws_iam'
+                        }
                     }
                 }
             ],
@@ -123,7 +132,10 @@ const serverlessConfiguration: AWS | any = {
                 {
                     http: {
                         path: "file/{fileKey}",
-                        method: "DELETE"
+                        method: "DELETE",
+                        authorizer: {
+                            type: 'aws_iam'
+                        }
                     }
                 }
             ],
