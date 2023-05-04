@@ -1,4 +1,4 @@
-import { APIGatewayEvent, APIGatewayProxyResult } from "aws-lambda";
+import {APIGatewayEvent, APIGatewayProxyResult} from "aws-lambda";
 import * as AWS from 'aws-sdk'
 const ses = new AWS.SES({ region: process.env.REGION, })
 
