@@ -38,6 +38,7 @@ const serverlessConfiguration: AWS | any = {
         sendMail: {
             handler: "src/api/mails/sendMail.handler",
             description: "Send email using SES service.",
+            name: "my-send-email",
             events: [
                 {
                     http: {
