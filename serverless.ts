@@ -2,8 +2,8 @@ import type { AWS } from '@serverless/typescript';
 import 'dotenv'
 
 const serverlessConfiguration: AWS | any = {
-    service: "serverless-app-test",
-    app: "test-app",
+    service: "my-serverless-app-test",
+    app: "my-test-app",
     useDotenv: true,
     provider: {
         name: "aws",
