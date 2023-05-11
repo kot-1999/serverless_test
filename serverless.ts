@@ -15,7 +15,9 @@ const serverlessConfiguration: AWS | any = {
         memorySize: 128,
         environment: {
             FILE_UPLOAD_BUCKET_NAME: "${self:custom.fileUploadBucketName}",
-            REGION: '${self:custom.region}'
+            REGION: '${self:custom.region}',
+            CONFIGURATION_SET_NAME: "${self:custom.configurationSetName}",
+            EMAIL_IDENTITY: "${self:custom.emailIdentity}",
         }
     },
 
@@ -29,8 +31,10 @@ const serverlessConfiguration: AWS | any = {
     },
 
     custom: {
-        fileUploadBucketName: "${self:service}-bucket-${self:provider.stage}",
-        region: 'eu-central-1'
+        fileUploadBucketName: "${self:service}-my-bucket-${self:provider.stage}",
+        region: 'eu-central-1',
+        configurationSetName: 'my-test-set',
+        emailIdentity: 'sashakashytskyy@gmail.com'
     },
 
     plugins: [
@@ -46,6 +50,90 @@ const serverlessConfiguration: AWS | any = {
                 Properties: {
                     BucketName: "${self:custom.fileUploadBucketName}",
                     AccessControl: "Private"
+                }
+            },
+
+            // Create configuration set for SES
+            SesConfigurationSet: {
+                Type: 'AWS::SES::ConfigurationSet',
+                Properties: {
+                    Name: "${self:custom.configurationSetName}",
+                    SendingOptions: {
+                        SendingEnabled: true,
+                    },
+                    ReputationOptions: {
+                        ReputationMetricsEnabled: true
+                    }
+                }
+            },
+
+            // Create email identity
+            SesEmailIdentity: {
+                Type : "AWS::SES::EmailIdentity",
+                DependsOn: 'SesConfigurationSet',
+                Properties: {
+                    ConfigurationSetAttributes: {
+                        ConfigurationSetName: "${self:custom.configurationSetName}"
+                    },
+                    EmailIdentity: "${self:custom.emailIdentity}",
+                }
+            },
+            // Create an Amazon SNS topic with subscription to an email
+            SnsTopic: {
+                Type : "AWS::SNS::Topic",
+                Properties : {
+                    TopicName: 'my-topic',
+                    DisplayName: 'my-display-topic',
+
+                }
+            },
+            SnsTopicSubscription: {
+                Type : "AWS::SNS::Subscription",
+                DependsOn: 'SesEmailIdentity',
+                Properties: {
+                    Endpoint: "oleksandr.kashytskyi@goodrequest.com",
+                    Protocol: 'Email-JSON',
+                    TopicArn: {
+                        Ref: "SnsTopic"
+                    }
+                }
+            },
+
+            // Configure Amazon SES to send information about email clicks, opens, and bounces to the Amazon SNS topic
+            SesConfigurationSetEventDestinationSns: {
+                Type : "AWS::SES::ConfigurationSetEventDestination",
+                DependsOn: 'SesConfigurationSet',
+                Properties : {
+                    ConfigurationSetName : "${self:custom.configurationSetName}",
+                    EventDestination : {
+                        MatchingEventTypes: ['reject', 'bounce', 'complaint', 'deliveryDelay', 'subscription'],
+                        SnsDestination: {
+                            TopicARN: {
+                                Ref: "SnsTopic"
+                            },
+                        },
+                        Enabled: true
+                    }
+                }
+            },
+
+            // Configure Amazon SES to send information about email clicks, opens, and bounces to CloudWatch
+            SesConfigurationSetEventDestinationCloudWatch: {
+                Type : "AWS::SES::ConfigurationSetEventDestination",
+                DependsOn: 'SesConfigurationSet',
+                Properties : {
+                    ConfigurationSetName : "${self:custom.configurationSetName}",
+                    EventDestination : {
+                        MatchingEventTypes: ['send', 'reject', 'bounce', 'complaint', 'delivery', 'open', 'click', 'deliveryDelay', 'subscription'],
+                        CloudWatchDestination: {
+                            DimensionConfigurations: [{
+                                DefaultDimensionValue : 'Line',
+                                DimensionName : 'my-dimension',
+                                DimensionValueSource : 'messageTag'
+                            }]
+                        },
+                        Enabled: true
+                    }
                 }
             }
         }
@@ -67,6 +155,7 @@ const serverlessConfiguration: AWS | any = {
                 }
             ]
         },
+
         sendMail: {
             handler: "src/api/mails/sendMail.handler",
             description: "Send email using SES service.",
@@ -93,6 +182,7 @@ const serverlessConfiguration: AWS | any = {
                 }
             ]
         },
+
         s3FilePost: {
             handler: "src/api/files/post.handler",
             name: "my-s3-file-post",
@@ -118,6 +208,7 @@ const serverlessConfiguration: AWS | any = {
                 }
             ]
         },
+
         s3FileGet: {
             handler: "src/api/files/get.handler",
             name: "my-s3-file-get",
@@ -143,6 +234,7 @@ const serverlessConfiguration: AWS | any = {
                 }
             ]
         },
+
         s3FileDelete: {
             handler: "src/api/files/delete.handler",
             name: "my-s3-file-delete",

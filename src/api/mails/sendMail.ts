@@ -1,7 +1,6 @@
 import {APIGatewayEvent, APIGatewayProxyResult} from "aws-lambda";
 import * as AWS from 'aws-sdk'
-const ses = new AWS.SES({ region: process.env.REGION, })
-
+const ses = new AWS.SES({ region: process.env.REGION, maxRetries: 0})
 
 export const handler = async (event: APIGatewayEvent): Promise<APIGatewayProxyResult>=> {
     const response: any = {
@@ -15,7 +14,6 @@ export const handler = async (event: APIGatewayEvent): Promise<APIGatewayProxyRe
         }
 
         const { to, from, subject, text } = JSON.parse(event.body)
-
         const data = await ses.sendEmail({
             Message: {
                 Body: {
