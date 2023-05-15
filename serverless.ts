@@ -1,5 +1,6 @@
 import type { AWS } from '@serverless/typescript';
 import 'dotenv'
+import myTemplate from './src/emailTemplates/myTemplate.json'
 
 const serverlessConfiguration: AWS | any = {
     service: "serverless-app-test",
@@ -18,6 +19,7 @@ const serverlessConfiguration: AWS | any = {
             REGION: '${self:custom.region}',
             CONFIGURATION_SET_NAME: "${self:custom.configurationSetName}",
             EMAIL_IDENTITY: "${self:custom.emailIdentity}",
+            EMAIL_TEMPLATE_NAME: myTemplate.Template.TemplateName
         }
     },
 
@@ -134,6 +136,14 @@ const serverlessConfiguration: AWS | any = {
                         },
                         Enabled: true
                     }
+                }
+            },
+
+            // Create email template
+            SesTemplate: {
+                Type: "AWS::SES::Template",
+                Properties: {
+                    Template: myTemplate.Template
                 }
             }
         }

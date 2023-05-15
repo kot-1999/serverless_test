@@ -8,6 +8,7 @@
     "module":"commonjs",
     "moduleResolution":"node",
     "esModuleInterop": true,
+    "resolveJsonModule": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "isolatedModules": true
