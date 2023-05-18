@@ -9,6 +9,8 @@ import myTemplate from './src/emailTemplates/myTemplate.json'
 * Custom premenne treba by bolo prepisat
 *
 * Emaily pre emailIdentity v SES a pre endpoint v SNS v pripade pouzitia sandboxu po deploje treba bude overit a suhlasit sa s niecim. Vsetko musi prist na samotne maily
+*
+* Este pre sledovanie mozes si zapnut Virtual Deliverability Manager dashboard v SES
 * */
 const serverlessConfiguration: AWS | any = {
     service: "serverless-app-test",
