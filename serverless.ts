@@ -1,7 +1,15 @@
 import type { AWS } from '@serverless/typescript';
 import 'dotenv'
 import myTemplate from './src/emailTemplates/myTemplate.json'
-
+/*
+* Do .env treba pridat nasledujuce 2 premenne
+* AWS_ACCESS_KEY_ID
+* AWS_SECRET_ACCESS_KEY
+*
+* Custom premenne treba by bolo prepisat
+*
+* Emaily pre emailIdentity v SES a pre endpoint v SNS v pripade pouzitia sandboxu po deploje treba bude overit a suhlasit sa s niecim. Vsetko musi prist na samotne maily
+* */
 const serverlessConfiguration: AWS | any = {
     service: "serverless-app-test",
     app: "test-app",
@@ -65,6 +73,10 @@ const serverlessConfiguration: AWS | any = {
                     },
                     ReputationOptions: {
                         ReputationMetricsEnabled: true
+                    },
+                    VdmOptions: {
+                        DashboardOptions: 'ENABLED',
+                        GuardianOptions: 'ENABLED'
                     }
                 }
             },
@@ -93,7 +105,7 @@ const serverlessConfiguration: AWS | any = {
                 Type : "AWS::SNS::Subscription",
                 DependsOn: 'SesEmailIdentity',
                 Properties: {
-                    Endpoint: "oleksandr.kashytskyi@goodrequest.com",
+                    Endpoint: "${self:custom.emailIdentity}", // Na tento mail sa budu posielat notifikacie d SNS
                     Protocol: 'Email-JSON',
                     TopicArn: {
                         Ref: "SnsTopic"
@@ -108,7 +120,7 @@ const serverlessConfiguration: AWS | any = {
                 Properties : {
                     ConfigurationSetName : "${self:custom.configurationSetName}",
                     EventDestination : {
-                        MatchingEventTypes: ['reject', 'bounce', 'complaint', 'deliveryDelay', 'subscription'],
+                        MatchingEventTypes: ['reject', 'bounce', 'complaint', 'deliveryDelay', 'subscription', 'open', 'click'],
                         SnsDestination: {
                             TopicARN: {
                                 Ref: "SnsTopic"
